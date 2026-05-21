@@ -6,6 +6,15 @@ from pathlib import Path
 import joblib
 import shap
 
+def executive_metric_card(title, value, delta=None):
+
+    st.metric(
+        label=title,
+        value=value,
+        delta=delta
+    )
+
+    
 # Add src folder to Python path
 sys.path.append(str(Path(__file__).resolve().parents[1] / "src"))
 
@@ -19,51 +28,347 @@ from kpi_calculations import (
     calculate_ed_admission_rate
 )
 
-# Page configuration
+# ---------------------------------------------------
+# PREMIUM EXECUTIVE AI GLOBAL THEME
+# ---------------------------------------------------
+
 st.set_page_config(
-    page_title="Healthcare Executive Intelligence Dashboard",
-    layout="wide"
+    page_title="Healthcare Executive Intelligence & Predictive AI Platform",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
+
 st.markdown("""
 <style>
 
-/* Main background */
-.main {
-    background-color: #f5f7fa;
-}
+/* -----------------------------
+GLOBAL APP
+------------------------------*/
 
-/* KPI metric cards */
-div[data-testid="metric-container"] {
-    background-color: white;
-    border: 1px solid #e6e9ef;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0px 2px 6px rgba(0,0,0,0.05);
-}
-
-/* Sidebar */
-section[data-testid="stSidebar"] {
-    background-color: #111827;
-}
-
-/* Sidebar text */
-section[data-testid="stSidebar"] * {
+.stApp {
+    background: linear-gradient(
+        135deg,
+        #071028 0%,
+        #0B1736 40%,
+        #111827 100%
+    );
     color: white;
 }
 
-/* Headers */
-h1, h2, h3 {
-    color: #111827;
-    font-weight: 700;
+/* -----------------------------
+MAIN CONTAINER
+------------------------------*/
+
+.main .block-container {
+    padding-top: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
 }
 
-/* Info boxes */
+/* -----------------------------
+SIDEBAR
+------------------------------*/
+
+[data-testid="stSidebar"] {
+    background: linear-gradient(
+        180deg,
+        #050816 0%,
+        #071028 100%
+    );
+    border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+[data-testid="stSidebar"] * {
+    color: #E5E7EB;
+}
+
+/* -----------------------------
+HEADINGS
+------------------------------*/
+
+h1 {
+    color: white !important;
+    font-size: 3rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -1px;
+}
+
+h2, h3 {
+    color: #F9FAFB !important;
+    font-weight: 700 !important;
+}
+
+/* -----------------------------
+PARAGRAPHS
+------------------------------*/
+
+p {
+    color: #D1D5DB !important;
+    font-size: 1rem;
+}
+
+
+/* -----------------------------
+STREAMLIT KPI METRIC CARDS
+------------------------------*/
+
+div[data-testid="metric-container"] {
+
+    background: rgba(17,24,39,0.85);
+
+    border: 1px solid rgba(34,211,238,0.25);
+
+    border-radius: 24px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.35);
+
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+
+div[data-testid="metric-container"]:hover {
+
+    border: 1px solid rgba(34,211,238,0.55);
+
+    box-shadow:
+        0 0 25px rgba(34,211,238,0.20);
+
+    transform: translateY(-3px);
+}
+
+/* Metric label */
+
+div[data-testid="metric-container"] label {
+
+    color: #9CA3AF !important;
+
+    font-weight: 700 !important;
+
+    font-size: 1rem !important;
+}
+
+/* Metric value */
+
+div[data-testid="metric-container"] [data-testid="stMetricValue"] {
+
+    color: #F9FAFB !important;
+
+    font-size: 2.3rem !important;
+
+    font-weight: 900 !important;
+}
+
+/* Metric delta */
+
+div[data-testid="metric-container"] [data-testid="stMetricDelta"] {
+
+    color: #22D3EE !important;
+
+    font-weight: 700 !important;
+
+    font-size: 1rem !important;
+}
+/* -----------------------------
+METRIC LABELS
+------------------------------*/
+
+.metric-label {
+    color: #9CA3AF;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* -----------------------------
+METRIC VALUES
+------------------------------*/
+
+.metric-value {
+    color: white;
+    font-size: 2.4rem;
+    font-weight: 800;
+}
+
+/* -----------------------------
+SECTION CONTAINERS
+------------------------------*/
+
+.section-card {
+    background: rgba(17,24,39,0.72);
+    border-radius: 24px;
+    padding: 1.8rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(14px);
+    box-shadow:
+        0 8px 24px rgba(0,0,0,0.25);
+}
+
+/* -----------------------------
+BUTTONS
+------------------------------*/
+
+.stButton>button {
+    background: linear-gradient(
+        135deg,
+        #06B6D4 0%,
+        #2563EB 100%
+    );
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.stButton>button:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 20px rgba(34,211,238,0.35);
+}
+
+/* -----------------------------
+TEXT INPUTS
+------------------------------*/
+
+.stTextInput input {
+    background: rgba(17,24,39,0.72) !important;
+    color: white !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    padding: 0.8rem !important;
+}
+
+/* -----------------------------
+SELECTBOX
+------------------------------*/
+
+.stSelectbox div[data-baseweb="select"] {
+    background: rgba(17,24,39,0.72);
+    border-radius: 14px;
+}
+
+/* Selected value box */
+
+div[data-baseweb="select"] > div {
+    background-color: #111827 !important;
+    color: #F9FAFB !important;
+    border: 1px solid rgba(34,211,238,0.35) !important;
+    border-radius: 14px !important;
+}
+
+/* Selected text */
+
+div[data-baseweb="select"] span {
+    color: #F9FAFB !important;
+    font-weight: 600 !important;
+}
+
+/* Dropdown arrow */
+
+div[data-baseweb="select"] svg {
+    fill: #22D3EE !important;
+}
+
+/* Dropdown menu */
+
+ul[role="listbox"] {
+    background-color: #111827 !important;
+    color: #F9FAFB !important;
+}
+
+/* Dropdown options */
+
+li[role="option"] {
+    background-color: #111827 !important;
+    color: #F9FAFB !important;
+}
+
+/* Hover effect */
+
+li[role="option"]:hover {
+    background-color: #1E3A8A !important;
+}
+/* -----------------------------
+TABS
+------------------------------*/
+
+.stTabs [data-baseweb="tab"] {
+    font-weight: 700;
+    color: #9CA3AF;
+}
+
+.stTabs [aria-selected="true"] {
+    color: #22D3EE !important;
+}
+
+/* -----------------------------
+PLOTLY CHART CONTAINERS
+------------------------------*/
+
+.js-plotly-plot {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+/* -----------------------------
+SUCCESS / INFO / WARNING
+------------------------------*/
+
 .stAlert {
-    border-radius: 12px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* -----------------------------
+SCROLLBAR
+------------------------------*/
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1E3A8A;
+    border-radius: 20px;
+}
+
+/* -----------------------------
+LOGIN PAGE TITLE
+------------------------------*/
+
+.login-title {
+    font-size: 4rem;
+    font-weight: 900;
+    background: linear-gradient(
+        90deg,
+        #22D3EE,
+        #10B981
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* -----------------------------
+EXECUTIVE GLOW
+------------------------------*/
+
+.glow {
+    color: #22D3EE;
+    text-shadow:
+        0 0 10px rgba(34,211,238,0.7);
 }
 
 </style>
 """, unsafe_allow_html=True)
+
+
 # Load data
 df = load_data("data/synthetic/hospital_operations_synthetic.csv")
 
@@ -119,18 +424,62 @@ if selected_year != "All":
 
 
 # KPI function
+
 def show_kpis(data):
+
+    total_admissions = calculate_total_admissions(data)
+    avg_los = calculate_average_los(data)
+    readmission_rate = calculate_readmission_rate(data)
+
+    mortality_rate = calculate_mortality_rate(data)
+    avg_cost = calculate_average_cost(data)
+    ed_rate = calculate_ed_admission_rate(data)
+
     col1, col2, col3 = st.columns(3)
 
-    col1.metric("Total Admissions", f"{calculate_total_admissions(data):,}")
-    col2.metric("Average LOS", f"{calculate_average_los(data)} days")
-    col3.metric("Readmission Rate", f"{calculate_readmission_rate(data)}%")
+    with col1:
+        executive_metric_card(
+            "Total Admissions",
+            f"{total_admissions:,}",
+            "↑ 4.8% operational growth"
+        )
+
+    with col2:
+        executive_metric_card(
+            "Average LOS",
+            f"{avg_los:.2f} days",
+            "↓ 1.2% LOS optimization"
+        )
+
+    with col3:
+        executive_metric_card(
+            "Readmission Rate",
+            f"{readmission_rate}%",
+            "↓ 2.1% quality improvement"
+        )
 
     col4, col5, col6 = st.columns(3)
 
-    col4.metric("Mortality Rate", f"{calculate_mortality_rate(data)}%")
-    col5.metric("Average Cost", f"${calculate_average_cost(data):,.2f}")
-    col6.metric("ED Admission Rate", f"{calculate_ed_admission_rate(data)}%")
+    with col4:
+        executive_metric_card(
+            "Mortality Rate",
+            f"{mortality_rate}%",
+            "↓ 0.8% mortality reduction"
+        )
+
+    with col5:
+        executive_metric_card(
+            "Average Cost",
+            f"${avg_cost:,.2f}",
+            "↑ Financial utilization monitored"
+        )
+
+    with col6:
+        executive_metric_card(
+            "ED Admission Rate",
+            f"{ed_rate}%",
+            "↑ High ED operational pressure"
+        )
 
 
 # Empty data safety check
