@@ -596,7 +596,8 @@ EXECUTIVE KPI CARDS
         white;
 
     font-size:
-        3rem;
+        2.5rem;
+    
 
     font-weight:
         900;
@@ -606,6 +607,8 @@ EXECUTIVE KPI CARDS
 
     margin-bottom:
         1rem;
+    word-break: 
+        break-word;
 }
 
 /* KPI trend badge */
