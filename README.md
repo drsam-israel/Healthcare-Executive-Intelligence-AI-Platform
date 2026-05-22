@@ -1,6 +1,17 @@
 
 # 🏥 Healthcare Executive Intelligence & Predictive AI Platform
 
+<p align="center">
+
+![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![Streamlit](https://img.shields.io/badge/Streamlit-Deployed-FF4B4B.svg)
+![Machine Learning](https://img.shields.io/badge/Machine%20Learning-XGBoost-green.svg)
+![Explainable AI](https://img.shields.io/badge/Explainable%20AI-SHAP-purple.svg)
+![Healthcare AI](https://img.shields.io/badge/Healthcare%20AI-Executive%20Intelligence-teal.svg)
+![Status](https://img.shields.io/badge/Status-Production%20Portfolio-success.svg)
+![License](https://img.shields.io/badge/License-Educational-lightgrey.svg)
+
+</p>
 ## Enterprise Healthcare Operations Intelligence System
 
 An enterprise-grade AI-powered Healthcare Operations Intelligence Platform designed for executive healthcare analytics, predictive readmission intelligence, explainable AI, operational forecasting, and conversational healthcare decision support.
