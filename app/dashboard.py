@@ -5,15 +5,61 @@ import sys
 from pathlib import Path
 import joblib
 import shap
+import textwrap
 
 def executive_metric_card(title, value, delta=None):
 
-    st.metric(
-        label=title,
-        value=value,
-        delta=delta
+    delta_part = ""
+
+    if delta:
+        delta_part = (
+            '<div class="metric-delta">'
+            f'{delta}'
+            '</div>'
+        )
+
+    card_html = (
+        '<div class="metric-card">'
+        f'<div class="metric-label">{title}</div>'
+        f'<div class="metric-value">{value}</div>'
+        f'{delta_part}'
+        '</div>'
     )
 
+    st.markdown(card_html, unsafe_allow_html=True)
+def style_plotly_chart(fig):
+    fig.update_layout(
+        template="plotly_dark",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(15,23,42,0.65)",
+        font=dict(
+            color="#E5E7EB",
+            family="Arial"
+        ),
+        title=dict(
+            font=dict(
+                size=20,
+                color="#F9FAFB"
+            )
+        ),
+        margin=dict(l=20, r=20, t=60, b=40),
+        legend=dict(
+            bgcolor="rgba(0,0,0,0)",
+            font=dict(color="#E5E7EB")
+        )
+    )
+
+    fig.update_xaxes(
+        gridcolor="rgba(148,163,184,0.18)",
+        zerolinecolor="rgba(148,163,184,0.18)"
+    )
+
+    fig.update_yaxes(
+        gridcolor="rgba(148,163,184,0.18)",
+        zerolinecolor="rgba(148,163,184,0.18)"
+    )
+
+    return fig
     
 # Add src folder to Python path
 sys.path.append(str(Path(__file__).resolve().parents[1] / "src"))
@@ -338,7 +384,264 @@ SCROLLBAR
     background: #1E3A8A;
     border-radius: 20px;
 }
+/* -----------------------------
+PREMIUM HERO SECTION
+------------------------------*/
 
+.hero-section {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(15,23,42,0.95),
+            rgba(30,41,59,0.92)
+        );
+
+    border: 1px solid rgba(34,211,238,0.18);
+
+    border-radius: 30px;
+
+    padding: 3rem;
+
+    margin-bottom: 2rem;
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.35);
+
+    backdrop-filter: blur(18px);
+}
+
+.hero-kicker {
+
+    color: #22D3EE;
+
+    font-size: 0.9rem;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 1rem;
+
+    text-transform: uppercase;
+}
+
+.hero-title {
+
+    color: white;
+
+    font-size: 3.5rem;
+
+    font-weight: 900;
+
+    line-height: 1.1;
+
+    margin-bottom: 1.2rem;
+
+    letter-spacing: -1px;
+}
+
+.hero-subtitle {
+
+    color: #CBD5E1;
+
+    font-size: 1.2rem;
+
+    line-height: 1.8;
+
+    max-width: 900px;
+
+    margin-bottom: 2rem;
+}
+
+.hero-badges {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 0.8rem;
+}
+
+.hero-badges span {
+
+    background:
+        rgba(34,211,238,0.12);
+
+    border:
+        1px solid rgba(34,211,238,0.25);
+
+    color:
+        #67E8F9;
+
+    padding:
+        0.6rem 1rem;
+
+    border-radius:
+        999px;
+
+    font-size:
+        0.9rem;
+
+    font-weight:
+        700;
+
+    backdrop-filter:
+        blur(12px);
+}
+
+          
+/* -----------------------------
+EXECUTIVE KPI CARDS
+------------------------------*/
+
+.metric-card {
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,23,42,0.92),
+            rgba(30,41,59,0.88)
+        );
+
+    border:
+        1px solid rgba(255,255,255,0.06);
+
+    border-radius:
+        24px;
+
+    padding:
+        1.7rem;
+
+    backdrop-filter:
+        blur(18px);
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,0.35);
+
+    transition:
+        all 0.28s ease;
+
+    overflow:
+        hidden;
+
+    position:
+        relative;
+
+    min-height:
+        180px;
+}
+
+/* Hover glow */
+
+.metric-card:hover {
+
+    transform:
+        translateY(-6px);
+
+    border:
+        1px solid rgba(34,211,238,0.35);
+
+    box-shadow:
+        0 0 30px rgba(34,211,238,0.12);
+}
+
+/* Top glow line */
+
+.metric-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 4px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #22D3EE,
+            #10B981
+        );
+}
+
+/* KPI label */
+
+.metric-label {
+
+    color:
+        #94A3B8;
+
+    font-size:
+        1rem;
+
+    font-weight:
+        700;
+
+    margin-bottom:
+        1rem;
+
+    letter-spacing:
+        0.3px;
+}
+
+/* KPI value */
+
+.metric-value {
+
+    color:
+        white;
+
+    font-size:
+        3rem;
+
+    font-weight:
+        900;
+
+    line-height:
+        1.1;
+
+    margin-bottom:
+        1rem;
+}
+
+/* KPI trend badge */
+
+.metric-delta {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        0.4rem;
+
+    padding:
+        0.45rem 0.85rem;
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(16,185,129,0.12);
+
+    color:
+        #6EE7B7;
+
+    font-size:
+        0.88rem;
+
+    font-weight:
+        800;
+
+    border:
+        1px solid rgba(16,185,129,0.18);
+}
 /* -----------------------------
 LOGIN PAGE TITLE
 ------------------------------*/
@@ -377,22 +680,36 @@ df["month"] = df["admission_date"].dt.to_period("M").astype(str)
 df["year"] = df["admission_date"].dt.year
 
 # Sidebar
-st.sidebar.title("Healthcare Executive Dashboard")
+sidebar_html = (
+    '<div style="padding:1.2rem 0.6rem 1.5rem 0.6rem; margin-bottom:1rem; border-bottom:1px solid rgba(255,255,255,0.08);">'
+    '<div style="font-size:1.7rem; font-weight:900; color:#22D3EE; line-height:1.1;">'
+    'HealthIntel AI'
+    '</div>'
+    '<div style="color:#CBD5E1; font-size:0.85rem; margin-top:0.5rem; line-height:1.5;">'
+    'Executive Healthcare Intelligence & Predictive AI Platform'
+    '</div>'
+    '<div style="margin-top:1rem; padding:0.55rem 0.8rem; border-radius:999px; background:rgba(34,211,238,0.10); border:1px solid rgba(34,211,238,0.20); color:#67E8F9; font-size:0.78rem; font-weight:800; text-align:center;">'
+    '🏥 Enterprise Command Center'
+    '</div>'
+    '</div>'
+)
+
+st.sidebar.markdown(sidebar_html, unsafe_allow_html=True)
 
 page = st.sidebar.radio(
-    "Navigate",
-     [
-    "Executive Overview",
-    "Operations Intelligence",
-    "Quality & Risk",
-    "Financial Analytics",
-    "AI Readmission Predictor",
-    "Explainable AI Insights",
-    "Operational Forecasting",
-    "Executive Insights & Recommendations",
-    "Conversational Executive AI Assistant",
-    "Data Preview"
-]
+    "🧭 Navigate",
+    [
+        "Executive Overview",
+        "Operations Intelligence",
+        "Quality & Risk",
+        "Financial Analytics",
+        "AI Readmission Predictor",
+        "Explainable AI Insights",
+        "Operational Forecasting",
+        "Executive Insights & Recommendations",
+        "Conversational Executive AI Assistant",
+        "Data Preview"
+    ]
 )
 
 st.sidebar.markdown("---")
@@ -489,15 +806,83 @@ if filtered_df.empty:
 
 
 # Executive Overview Page
+
 if page == "Executive Overview":
 
-    st.title("Healthcare Executive Intelligence Dashboard")
+    st.markdown("""
+    <style>
 
-    st.markdown(
-        "Executive overview of hospital operations, quality, utilization, and financial performance analytics."
+    .premium-hero {
+        background: linear-gradient(
+            135deg,
+            rgba(15,23,42,0.98),
+            rgba(30,41,59,0.95)
+        );
+
+        padding: 3rem;
+
+        border-radius: 28px;
+
+        border: 1px solid rgba(34,211,238,0.18);
+
+        margin-bottom: 2rem;
+
+        box-shadow:
+            0 10px 40px rgba(0,0,0,0.35);
+    }
+
+    .hero-kicker {
+        color: #22D3EE;
+        font-size: 0.9rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        margin-bottom: 1rem;
+    }
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background-color: #020617;
+}
+
+
+/* -----------------------------
+SAFE RADIO NAVIGATION
+------------------------------*/
+
+    .hero-title {
+        color: white;
+        font-size: 3.5rem;
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 1.2rem;
+    }
+
+    .hero-subtitle {
+        color: #CBD5E1;
+        font-size: 1.2rem;
+        line-height: 1.8;
+        max-width: 900px;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    hero_html = (
+        '<div class="premium-hero">'
+        '<div class="hero-kicker">AI-POWERED HEALTHCARE OPERATIONS COMMAND CENTER</div>'
+        '<div class="hero-title">Healthcare Executive Intelligence & Predictive AI Platform</div>'
+        '<div class="hero-subtitle">'
+        'Executive analytics, predictive readmission intelligence, explainable AI, '
+        'operational forecasting, and conversational healthcare decision support.'
+        '</div>'
+        '</div>'
     )
 
+    st.markdown(hero_html, unsafe_allow_html=True)
+
     show_kpis(filtered_df)
+    
+
+    st.markdown("---")
 
     st.markdown("---")
 
@@ -541,7 +926,7 @@ if page == "Executive Overview":
         markers=True
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(style_plotly_chart(fig), use_container_width=True)
     st.markdown("---")
 
     st.subheader("AI-Generated Executive Summary")
@@ -586,7 +971,7 @@ elif page == "Operations Intelligence":
             title="Admissions by Department"
         )
 
-        col1.plotly_chart(fig1, use_container_width=True)
+        col1.plotly_chart(style_plotly_chart(fig1), use_container_width=True, key="operations_admissions_department")
 
         los_by_department = (
             filtered_df.groupby("department")["length_of_stay"]
@@ -601,7 +986,7 @@ elif page == "Operations Intelligence":
             title="Average Length of Stay by Department"
         )
 
-        col2.plotly_chart(fig2, use_container_width=True)
+        col2.plotly_chart(style_plotly_chart(fig2), use_container_width=True, key="operations_los_department")
 
         st.markdown("---")
 
@@ -612,7 +997,7 @@ elif page == "Operations Intelligence":
             title="Length of Stay Distribution"
         )
 
-        st.plotly_chart(los_distribution, use_container_width=True)
+        st.plotly_chart(style_plotly_chart(los_distribution), use_container_width=True, key="operations_los_distribution")
 
 elif page == "Quality & Risk":
 
@@ -642,7 +1027,7 @@ elif page == "Quality & Risk":
             title="Readmission Rate by Department (%)"
         )
 
-        st.plotly_chart(fig1, use_container_width=True)
+        st.plotly_chart(style_plotly_chart(fig1), use_container_width=True, key="quality_readmission")
 
     with tab2:
 
@@ -660,7 +1045,7 @@ elif page == "Quality & Risk":
             title="Mortality Rate by Department (%)"
         )
 
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(style_plotly_chart(fig2), use_container_width=True, key="quality_mortality")
 
     with tab3:
 
@@ -682,7 +1067,7 @@ elif page == "Quality & Risk":
             title="Diagnosis-Level Risk Map"
         )
 
-        st.plotly_chart(fig3, use_container_width=True)
+        st.plotly_chart(style_plotly_chart(fig3), use_container_width=True, key="quality_risk_map")
 
 
 # Financial Analytics Page
@@ -706,7 +1091,7 @@ elif page == "Financial Analytics":
         title="Payer Mix"
     )
 
-    col1.plotly_chart(fig1, use_container_width=True)
+    col1.plotly_chart(style_plotly_chart(fig1), use_container_width=True, key="financial_payer_mix")
 
     cost_by_department = (
         filtered_df.groupby("department")["estimated_cost"]
@@ -721,7 +1106,7 @@ elif page == "Financial Analytics":
         title="Average Estimated Cost by Department"
     )
 
-    col2.plotly_chart(fig2, use_container_width=True)
+    col2.plotly_chart(style_plotly_chart(fig2), use_container_width=True, key="financial_avg_cost")
 
     st.markdown("---")
 
@@ -738,7 +1123,7 @@ elif page == "Financial Analytics":
         title="Total Estimated Cost Burden by Department"
     )
 
-    st.plotly_chart(fig3, use_container_width=True)
+    st.plotly_chart(style_plotly_chart(fig3), use_container_width=True, key="financial_total_cost")
 
 elif page == "AI Readmission Predictor":
 
