@@ -327,21 +327,21 @@ Deployed using:
 
 # 📸 Platform Screenshots
 
-## Executive Dashboard
+## Executive Overview
 
-(Add executive dashboard screenshot here)
+![Executive Overview](executive-overview.png)
 
 ---
 
-## AI Readmission Prediction
+## Financial Analytics
 
-(Add AI prediction screenshot here)
+![Financial Analytics](financial-analytics.png)
 
 ---
 
 ## Explainable AI Insights
 
-(Add SHAP/XAI screenshot here)
+![Explainable AI Insights](explainable-ai.png)
 
 ---
 
